@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+from email.policy import HTTP
 import re
 from unicodedata import name
 from django.shortcuts import render,redirect
@@ -138,3 +139,12 @@ def addcomment(request,pk):
     }
     
     return render(request,'add_comment.html',context)
+
+
+def search(request):
+    search=request.GET['search']
+    #topic= Topic.objects.all()
+    topic= Topic.objects.filter(title__icontains=search)
+    params = {'topic':topic}
+    return render(request,'search.html',params)
+    #return HttpResponse('I am search')    

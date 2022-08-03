@@ -15,10 +15,16 @@
         <a class="logo" href="#home">RESPARE</a>
         <div class="categories">
             <a href="categories">Categories</a>
-            <a href="about">About</a>
-            <a class="login" href="accounts/login.html">Login</a>
+            {%if user.is_authenticated %}
+            <a class="login">Welcome {{fname}}</a>
+            <a class="Signout"  href="/signout">Sign Out</a>
+            {% else %}
+            <a class="login" href="/signin">Login</a>
+            {% endif %}
             <div class="rs"></div>
-            <input type="text" class="searchbox" placeholder="Search...">
+            <form method="get" action="/search">
+                <input type="text" class="searchbox" placeholder="Search..." name="search" id="search">
+            </form>
         </div>
     </div>
     </div>
