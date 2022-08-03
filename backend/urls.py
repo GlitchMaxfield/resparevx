@@ -23,5 +23,6 @@ urlpatterns = [
     path('signin/',views.signin,name="signin"),
     path('signout/',views.signout,name="signout"),
     path('topic/<int:pk>/react/',views.react,name="react"),  
-    path('topic/<int:pk>/',views.topic,name='topic')
+    path('topic/<int:pk>/',views.topic,name='topic'),
+    path('topic/<int:pk>/add-comment',views.addcomment,name='add-comment')
 ]

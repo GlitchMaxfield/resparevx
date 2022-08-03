@@ -1,6 +1,8 @@
+import imp
 from django.db import models
 from django.conf import settings
 from datetime import datetime,date
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Topic(models.Model):
@@ -33,6 +35,8 @@ class Reaction(models.Model):
 class Comment(models.Model): 
     topic=models.ForeignKey(Topic,related_name="comments", on_delete=models.CASCADE) 
     name= models.CharField(max_length=255)
+    #ForeignKey(User)
+    #CharField(max_length=255)
     body= models.TextField()
     date_added=models.DateTimeField(auto_now_add=True)
 

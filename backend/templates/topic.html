@@ -71,14 +71,19 @@
                No Comments...<a href="#">
                 Add One </a>
         {% else %} 
+
+        <br/><br/>
             {%for comment in topic.comments.all%}
                 <strong>
                  {{comment.name}} - {{comment.date_added}}
                 </strong>
                 <br/>
                 {{comment.body}}
+                <br/><br/>
             {%endfor%} 
-        {% endif %}  
+        {% endif %}
+        
+         <p><a class="btn  btn-primary" href="{% url 'add-comment' topic.id %}"> Add Comment </a></p>
         </div>
         <div class="topic-cmt">
 

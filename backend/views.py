@@ -1,13 +1,17 @@
 from datetime import datetime
 from decimal import Decimal
 import re
+from unicodedata import name
 from django.shortcuts import render,redirect
+from django.shortcuts import reverse
 from django.http import HttpResponse
 from backend import models
-from backend.models import Reaction, Topic, Choice
+from backend.models import Reaction, Topic, Choice,Comment
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from backend.forms import CommentForm
+from datetime import datetime
 
 # Create your views here.
 def home(request):
@@ -18,7 +22,7 @@ def home(request):
 
 def register(request):
 
-    if request.method == "POST":
+    if request.method == "POST":        
       
       fname = request.POST['fname']
       lname = request.POST['lname']
@@ -68,7 +72,9 @@ def signout(request):
 def topic(request,pk):
     topic=Topic.objects.get(id=pk)
     reactions=Choice.objects.filter(topic_id=pk)
+
     return render(request,'topic.html',{'topic':topic,'reactions':list(reactions),'percent':None})
+    
 
 def react(request,pk):
     if request.user.is_authenticated:
@@ -105,3 +111,30 @@ def react(request,pk):
     #return redirect(url)
     #return redirect('request.META['HTTP_REFERER']')
 
+def addcomment(request,pk):
+    topic= Topic.objects.get(id=pk)
+
+    form=CommentForm(instance=topic)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=topic)
+        if form.is_valid():
+            name = request.user.username
+            body= form.cleaned_data['body'];
+
+            c=Comment(topic=topic,name=name,body=body,date_added=datetime.now())
+            c.save()
+            return render(request,'topic.html',{'topic':topic,})
+            #return redirect('topic')
+        else:
+            print('form is invalid')
+    else:
+        form=CommentForm()
+
+
+    context= {
+        'topic':topic,   
+        'form':form
+    }
+    
+    return render(request,'add_comment.html',context)
